@@ -70,6 +70,46 @@ Friend Module ModSecret
             If ThemeNow = NewTheme AndAlso NewTheme >= 0 Then Return
             If NewTheme >= 0 Then ThemeNow = NewTheme
 
+            '根据主题编号设置配色
+            Select Case ThemeNow
+                Case 0 '龙猫蓝
+                    ColorHue = 210 : ColorSat = 85 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 1 '甜柠青
+                    ColorHue = 170 : ColorSat = 85 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 2 '小草绿
+                    ColorHue = 110 : ColorSat = 75 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 3 '菠萝黄
+                    ColorHue = 45 : ColorSat = 90 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 4 '橡木棕
+                    ColorHue = 25 : ColorSat = 50 : ColorLightAdjust = -5 : ColorHueTopbarDelta = 0
+                Case 5 '玄素黑
+                    ColorHue = 0 : ColorSat = 0 : ColorLightAdjust = -15 : ColorHueTopbarDelta = 0
+                Case 6 '铁杆粉
+                    ColorHue = 335 : ColorSat = 80 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 7 '神秘紫
+                    ColorHue = 270 : ColorSat = 75 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 8 '秋仪金
+                    ColorHue = 38 : ColorSat = 80 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 9 '活跃橙
+                    ColorHue = 20 : ColorSat = 90 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 10 '跳票红
+                    ColorHue = 0 : ColorSat = 85 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+                Case 11 '极客蓝
+                    ColorHue = 210 : ColorSat = 90 : ColorLightAdjust = -5 : ColorHueTopbarDelta = 30
+                Case 12 '滑稽彩
+                    If NewTheme >= 0 Then ColorHue = 0 Else ColorHue = (ColorHue + 10) Mod 360
+                    ColorSat = 90 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 60
+                Case 13 '欧皇彩
+                    ColorHue = 45 : ColorSat = 95 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 60
+                Case 14 '自定义
+                    ColorHue = Settings.Get(Of Integer)("UiLauncherHue")
+                    ColorSat = Settings.Get(Of Integer)("UiLauncherSat")
+                    ColorLightAdjust = Settings.Get(Of Integer)("UiLauncherLight") - 20
+                    ColorHueTopbarDelta = Settings.Get(Of Integer)("UiLauncherDelta")
+                Case Else
+                    ColorHue = 210 : ColorSat = 85 : ColorLightAdjust = 0 : ColorHueTopbarDelta = 0
+            End Select
+
             Color1 = New MyColor().FromHSL2(ColorHue, ColorSat * 0.2, 25 + ColorLightAdjust * 0.3)
             Color2 = New MyColor().FromHSL2(ColorHue, ColorSat, 45 + ColorLightAdjust)
             Color3 = New MyColor().FromHSL2(ColorHue, ColorSat, 55 + ColorLightAdjust)
