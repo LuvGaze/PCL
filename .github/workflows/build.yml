@@ -14,6 +14,8 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
+    permissions:
+      contents: write
     strategy:  
        matrix:  
          configuration: [Debug, Release]
@@ -67,3 +69,18 @@ jobs:
       with:
         name: ${{ matrix.configuration }} ${{ env.describe }}
         path: Plain Craft Launcher 2\obj\${{ matrix.configuration }}\Plain Craft Launcher 2.exe
+
+    - name: Publish to Releases
+      if: matrix.configuration == 'Release' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        $tag = "${{ env.describe }}"
+        $asset = "Plain Craft Launcher 2\obj\Release\Plain Craft Launcher 2.exe"
+        gh release view $tag --json tagName 2>$null | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+          gh release upload $tag $asset --clobber
+        } else {
+          gh release create $tag $asset --title "PCL $tag" --target "${{ github.sha }}" --generate-notes
+        }
